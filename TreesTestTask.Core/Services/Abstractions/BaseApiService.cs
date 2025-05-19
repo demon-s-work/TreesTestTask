@@ -1,15 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
+using TreesTestTask.Common;
 
 namespace TreesTestTask.Services.Abstractions
 {
 	[ApiController]
-	public abstract class BaseApiService
+	public abstract class BaseApiService : BaseService
 	{
-		private readonly ILogger _logger;
-
-		protected BaseApiService(ILogger logger)
+		protected BaseApiService(ILogger logger) : base(logger)
 		{
-			_logger = logger;
 		}
 	}
 }

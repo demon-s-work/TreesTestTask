@@ -16,4 +16,9 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.18" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TreesTestTask.Common\TreesTestTask.Common.csproj" />
+      <ProjectReference Include="..\TreesTestTask.Dal.Contracts\TreesTestTask.Dal.Contracts.csproj" />
+    </ItemGroup>
+
 </Project>

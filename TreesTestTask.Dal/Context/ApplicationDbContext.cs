@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TreesTestTask.Migrations.Entities;
+using TreesTestTask.Dal.Contracts.Entities;
 
 namespace TreesTestTask.Migrations.Context
 {

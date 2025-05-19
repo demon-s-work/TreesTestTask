@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreesTestTask.Core", "Trees
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreesTestTask.Dal", "TreesTestTask.Dal\TreesTestTask.Dal.csproj", "{B49A2666-25D0-4B5F-BE0D-35D9FE413176}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreesTestTask.Common", "TreesTestTask.Common\TreesTestTask.Common.csproj", "{5EEE894F-4B40-49E4-83BE-979CF7C2196B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreesTestTask.Dal.Contracts", "TreesTestTask.Dal.Contracts\TreesTestTask.Dal.Contracts.csproj", "{A491D424-9F5C-483A-885E-C8DA4046EAAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{B49A2666-25D0-4B5F-BE0D-35D9FE413176}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B49A2666-25D0-4B5F-BE0D-35D9FE413176}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B49A2666-25D0-4B5F-BE0D-35D9FE413176}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EEE894F-4B40-49E4-83BE-979CF7C2196B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EEE894F-4B40-49E4-83BE-979CF7C2196B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EEE894F-4B40-49E4-83BE-979CF7C2196B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EEE894F-4B40-49E4-83BE-979CF7C2196B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A491D424-9F5C-483A-885E-C8DA4046EAAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A491D424-9F5C-483A-885E-C8DA4046EAAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A491D424-9F5C-483A-885E-C8DA4046EAAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A491D424-9F5C-483A-885E-C8DA4046EAAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

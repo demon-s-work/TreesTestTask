@@ -3,9 +3,9 @@ using TreesTestTask.Services.Abstractions;
 
 namespace TreesTestTask.Services
 {
-	public class TreeApiService : BaseApiService
+	public class NodeApiService : BaseApiService
 	{
-		public TreeApiService(ILogger<TreeApiService> logger) : base(logger)
+		public NodeApiService(ILogger<NodeApiService> logger) : base(logger)
 		{
 		}
 	}

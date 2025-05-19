@@ -1,4 +1,4 @@
-namespace TreesTestTask.Migrations.Entities
+namespace TreesTestTask.Dal.Contracts.Entities
 {
 	public class JournalRecord
 	{
