@@ -17,7 +17,7 @@ namespace TreesTestTask.Migrations.Context
 		{
 			modelBuilder.Entity<Node>()
 			            .HasOne(n => n.Parent)
-			            .WithMany(n => n.Childrens)
+			            .WithMany(n => n.Children)
 			            .HasForeignKey(n => n.ParentId)
 			            .OnDelete(DeleteBehavior.Restrict);
 		}

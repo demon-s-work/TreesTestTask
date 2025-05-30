@@ -18,9 +18,8 @@ namespace TreesTestTask.Migrations.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Timestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    EventId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    EventId = table.Column<string>(type: "text", nullable: false),
                     QueryParameters = table.Column<string>(type: "text", nullable: false),
                     BodyParameters = table.Column<string>(type: "text", nullable: false),
                     StackTrace = table.Column<string>(type: "text", nullable: false)
@@ -34,10 +33,11 @@ namespace TreesTestTask.Migrations.Migrations
                 name: "Nodes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    ParentId = table.Column<Guid>(type: "uuid", nullable: true),
-                    TreeId = table.Column<Guid>(type: "uuid", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    ParentId = table.Column<int>(type: "integer", nullable: true),
+                    TreeId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {

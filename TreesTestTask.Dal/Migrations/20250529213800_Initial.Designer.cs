@@ -12,7 +12,7 @@ using TreesTestTask.Migrations.Context;
 namespace TreesTestTask.Migrations.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250522122638_Initial")]
+    [Migration("20250529213800_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -37,11 +37,12 @@ namespace TreesTestTask.Migrations.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EventId"));
+                    b.Property<string>("EventId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("QueryParameters")
                         .IsRequired()
@@ -51,9 +52,6 @@ namespace TreesTestTask.Migrations.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("Timestamp")
-                        .HasColumnType("timestamp with time zone");
-
                     b.HasKey("Id");
 
                     b.ToTable("JournalRecords");
@@ -61,19 +59,22 @@ namespace TreesTestTask.Migrations.Migrations
 
             modelBuilder.Entity("TreesTestTask.Dal.Contracts.Entities.Node", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
 
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("TreeId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("TreeId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -85,7 +86,7 @@ namespace TreesTestTask.Migrations.Migrations
             modelBuilder.Entity("TreesTestTask.Dal.Contracts.Entities.Node", b =>
                 {
                     b.HasOne("TreesTestTask.Dal.Contracts.Entities.Node", "Parent")
-                        .WithMany("Childrens")
+                        .WithMany("Children")
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
@@ -94,7 +95,7 @@ namespace TreesTestTask.Migrations.Migrations
 
             modelBuilder.Entity("TreesTestTask.Dal.Contracts.Entities.Node", b =>
                 {
-                    b.Navigation("Childrens");
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

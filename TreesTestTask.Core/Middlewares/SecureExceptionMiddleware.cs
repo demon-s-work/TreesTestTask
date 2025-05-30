@@ -1,9 +1,8 @@
 ﻿using System.Text;
-using AutoMapper;
 using Newtonsoft.Json;
+using TreesTestTask.Common.Exceptions;
 using TreesTestTask.Dal.Contracts.Models;
 using TreesTestTask.Dal.Contracts.Repositories;
-using TreesTestTask.Exceptions;
 
 namespace TreesTestTask.Middlewares
 {
@@ -11,16 +10,14 @@ namespace TreesTestTask.Middlewares
 	{
 		private readonly RequestDelegate _next;
 		private readonly ILogger<SecureExceptionMiddleware> _logger;
-		private readonly IMapper _mapper;
 
 		public SecureExceptionMiddleware(
 			RequestDelegate next,
-			ILogger<SecureExceptionMiddleware> logger,
-			IMapper mapper)
+			ILogger<SecureExceptionMiddleware> logger)
+
 		{
 			_next = next;
 			_logger = logger;
-			_mapper = mapper;
 		}
 
 		public async Task InvokeAsync(HttpContext context)
@@ -33,7 +30,7 @@ namespace TreesTestTask.Middlewares
 			{
 				var journalRepository = context.RequestServices.GetRequiredService<IJournalRepository>();
 				var queryParams = context.Request.Query.ToDictionary(q => q.Key, q => q.Value.ToString());
-				string body = "";
+				var body = "";
 				context.Request.EnableBuffering();
 				using (var reader = new StreamReader(context.Request.Body, Encoding.UTF8, leaveOpen: true))
 				{
@@ -41,18 +38,17 @@ namespace TreesTestTask.Middlewares
 					context.Request.Body.Position = 0;
 				}
 
-				var eventId = Guid.NewGuid();
 				var journalRecord = new JournalRecordDto
 				{
-					Timestamp = DateTime.UtcNow,
+					CreatedAt = DateTime.UtcNow,
 					QueryParameters = JsonConvert.SerializeObject(queryParams),
 					BodyParameters = body,
+					EventId = context.TraceIdentifier,
 					StackTrace = ex.StackTrace
 				};
 
-				await journalRepository.AddJournalRecordAsync(journalRecord);
+				var inserted = await journalRepository.AddJournalRecordAsync(journalRecord);
 
-				// Prepare response
 				context.Response.ContentType = "application/json";
 				context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
@@ -62,7 +58,7 @@ namespace TreesTestTask.Middlewares
 					response = new
 					{
 						type = secureEx.GetType().Name,
-						id = eventId,
+						id = inserted.EventId,
 						data = new { message = secureEx.Message }
 					};
 				}
@@ -71,9 +67,13 @@ namespace TreesTestTask.Middlewares
 					response = new
 					{
 						type = "Exception",
-						id = eventId,
-						data = new { message = $"Internal server error ID = {eventId}" }
+						id = inserted.EventId,
+						data = new { message = $"Internal server error ID = {inserted.EventId}" }
 					};
+					if (ex is BaseException baseEx)
+					{
+						context.Response.StatusCode = baseEx.ResponseStatusCode;
+					}
 				}
 
 				await context.Response.WriteAsJsonAsync(response);

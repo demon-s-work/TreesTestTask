@@ -1,10 +1,11 @@
+using Newtonsoft.Json;
+using TreesTestTask.Common.Mapper;
 using TreesTestTask.Core.Contracts.Services;
 using TreesTestTask.Dal.Contracts.Repositories;
 using TreesTestTask.Middlewares;
 using TreesTestTask.Migrations.Extensions;
 using TreesTestTask.Migrations.Repositories;
 using TreesTestTask.Services;
-using TreesTestTask.Settings;
 
 namespace TreesTestTask;
 
@@ -14,11 +15,14 @@ public class Program
 	{
 		var builder = WebApplication.CreateBuilder(args);
 
-		builder.Services.AddControllers();
+		builder.Services.AddControllers()
+		       .AddNewtonsoftJson(opts => {
+			       opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+		       });
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddSwaggerGen();
 		builder.Services.AddApplicationDbContext(builder.Configuration.GetConnectionString("Default"));
-		builder.Services.AddAutoMapper(typeof(AppMappingProfile));
+		builder.Services.AddMapster();
 
 		builder.Services.AddScoped<IJournalApiService, JournalApiService>();
 		builder.Services.AddScoped<IJournalRepository, JournalRepository>();
@@ -34,11 +38,12 @@ public class Program
 			app.UseSwaggerUI();
 		}
 
+		app.UseMiddleware<SecureExceptionMiddleware>();
+
 		app.UseHttpsRedirection();
 		app.UseAuthorization();
 		app.MapControllers();
 
-		app.UseMiddleware<SecureExceptionMiddleware>();
 
 		app.Run();
 	}

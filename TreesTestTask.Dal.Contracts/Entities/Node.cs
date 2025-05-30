@@ -2,17 +2,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TreesTestTask.Dal.Contracts.Entities
 {
-	public class Node
+	public class Node : BaseEntity
 	{
-		[Key]
-		public Guid Id { get; set; }
 		[Required]
+		[MaxLength(64)]
 		public string Name { get; set; }
-		public Guid? ParentId { get; set; }
+		public int? ParentId { get; set; }
 		public virtual Node? Parent { get; set; }
-		
-		[Required]
-		public Guid TreeId { get; set; }
-		public virtual IEnumerable<Node> Childrens { get; set; }
+
+		public int? TreeId { get; set; }
+		public virtual IEnumerable<Node> Children { get; set; }
 	}
 }

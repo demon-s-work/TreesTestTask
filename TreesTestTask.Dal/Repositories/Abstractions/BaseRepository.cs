@@ -1,4 +1,4 @@
-using AutoMapper;
+using MapsterMapper;
 using Microsoft.Extensions.Logging;
 using TreesTestTask.Common;
 using TreesTestTask.Migrations.Context;

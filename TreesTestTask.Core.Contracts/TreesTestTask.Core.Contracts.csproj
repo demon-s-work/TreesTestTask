@@ -10,4 +10,8 @@
         <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.3.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\TreesTestTask.Dal.Contracts\TreesTestTask.Dal.Contracts.csproj"/>
+    </ItemGroup>
+
 </Project>

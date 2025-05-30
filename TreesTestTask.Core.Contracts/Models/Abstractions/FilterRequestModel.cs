@@ -1,11 +1,13 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TreesTestTask.Core.Contracts.Models
+namespace TreesTestTask.Core.Contracts.Models.Abstractions
 {
-	public class JournalEntryFilter
+	public class FilterRequestModel
 	{
 		public DateTimeOffset? From { get; set; }
+
 		public DateTimeOffset? To { get; set; }
+
 		[JsonPropertyName("search")]
 		public string? SearchText { get; set; }
 	}

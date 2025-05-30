@@ -1,0 +1,1 @@
+DROP FUNCTION get_nodes_hierarchy(RootName varchar (64));
