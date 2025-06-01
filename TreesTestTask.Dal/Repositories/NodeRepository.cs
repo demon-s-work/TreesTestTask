@@ -26,19 +26,18 @@ namespace TreesTestTask.Migrations.Repositories
 			                         .ToListAsync();
 			var existingNode = tree.FirstOrDefault(n => n.ParentId == null && n.Name == name);
 
-			if (existingNode is null)
+			if (existingNode is not null)
+				return _mapper.Map<NodeDto>(existingNode);
+
+			var inserted = await _context.Nodes.AddAsync(new Node
 			{
-				var inserted = await _context.Nodes.AddAsync(new Node
-				{
-					Name = name
-				});
-				await SaveChangesAsync();
-				inserted.Entity.TreeId = inserted.Entity.Id;
-				await SaveChangesAsync();
+				Name = name
+			});
+			await SaveChangesAsync();
+			inserted.Entity.TreeId = inserted.Entity.Id;
+			await SaveChangesAsync();
 
-			}
-
-			return _mapper.Map<NodeDto>(existingNode);
+			return _mapper.Map<NodeDto>(inserted.Entity);
 		}
 
 		public async Task<NodeDto?> GetNodeAsync(int id, int treeId)

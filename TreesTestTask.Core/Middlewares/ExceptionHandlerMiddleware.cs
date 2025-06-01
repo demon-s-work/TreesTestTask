@@ -6,14 +6,14 @@ using TreesTestTask.Dal.Contracts.Repositories;
 
 namespace TreesTestTask.Middlewares
 {
-	public class SecureExceptionMiddleware
+	public class ExceptionHandlerMiddleware
 	{
 		private readonly RequestDelegate _next;
-		private readonly ILogger<SecureExceptionMiddleware> _logger;
+		private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
-		public SecureExceptionMiddleware(
+		public ExceptionHandlerMiddleware(
 			RequestDelegate next,
-			ILogger<SecureExceptionMiddleware> logger)
+			ILogger<ExceptionHandlerMiddleware> logger)
 
 		{
 			_next = next;
@@ -44,10 +44,10 @@ namespace TreesTestTask.Middlewares
 					QueryParameters = JsonConvert.SerializeObject(queryParams),
 					BodyParameters = body,
 					EventId = context.TraceIdentifier,
-					StackTrace = ex.StackTrace
+					StackTrace = ex.StackTrace ?? string.Empty
 				};
 
-				var inserted = await journalRepository.AddJournalRecordAsync(journalRecord);
+				await journalRepository.AddJournalRecordAsync(journalRecord);
 
 				context.Response.ContentType = "application/json";
 				context.Response.StatusCode = StatusCodes.Status500InternalServerError;
@@ -58,7 +58,7 @@ namespace TreesTestTask.Middlewares
 					response = new
 					{
 						type = secureEx.GetType().Name,
-						id = inserted.EventId,
+						id = context.TraceIdentifier,
 						data = new { message = secureEx.Message }
 					};
 				}
@@ -67,8 +67,8 @@ namespace TreesTestTask.Middlewares
 					response = new
 					{
 						type = "Exception",
-						id = inserted.EventId,
-						data = new { message = $"Internal server error ID = {inserted.EventId}" }
+						id = context.TraceIdentifier,
+						data = new { message = $"Internal server error ID = {context.TraceIdentifier}" }
 					};
 					if (ex is BaseException baseEx)
 					{

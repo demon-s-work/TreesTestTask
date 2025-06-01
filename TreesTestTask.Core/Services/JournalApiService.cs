@@ -1,8 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TreesTestTask.Core.Contracts.Models;
-using TreesTestTask.Core.Contracts.Models.Abstractions;
 using TreesTestTask.Core.Contracts.Services;
 using TreesTestTask.Dal.Contracts.Models;
 using TreesTestTask.Dal.Contracts.Repositories;
@@ -28,9 +28,10 @@ namespace TreesTestTask.Services
 
 		[HttpPost]
 		[ActionName("getRange")]
-		public async Task<JournalEntriesGetRangeResponseModel> GetRangeAsync([FromQuery] JournalEntriesGetRangeRequestModel request, [FromBody] FilterRequestModel filter)
+		public async Task<JournalEntriesGetRangeResponseModel> GetRangeAsync([FromQuery] JournalEntriesGetRangeRequestModel request,
+		                                                                     [FromBody, Required] JournalEntryFilterRequestModel journalEntryFilter)
 		{
-			var journalInfo = await _journalRepository.GetRange(_mapper.Map<JournalFilterModel>(filter), request.Skip, request.Take);
+			var journalInfo = await _journalRepository.GetRange(_mapper.Map<JournalFilterModel>(journalEntryFilter), request.Skip, request.Take);
 
 			return new JournalEntriesGetRangeResponseModel
 			{
@@ -41,9 +42,11 @@ namespace TreesTestTask.Services
 
 		[HttpPost]
 		[ActionName("getSingle")]
-		public async Task<JournalEntryResponseModel> GetSingle([FromQuery] int id)
+		public async Task<JournalEntryResponseModel?> GetSingle([FromQuery, Required] int id)
 		{
 			var journalEntry = await _journalRepository.GetByIdAsync(id);
+			if (journalEntry == null)
+				return null;
 			return new JournalEntryResponseModel
 			{
 				Id = journalEntry.Id,

@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TreesTestTask.Core.Contracts.Models;
-using TreesTestTask.Core.Contracts.Models.Abstractions;
 
 namespace TreesTestTask.Core.Contracts.Services
 {
 	public interface IJournalApiService
 	{
-		Task<JournalEntriesGetRangeResponseModel> GetRangeAsync(JournalEntriesGetRangeRequestModel request, FilterRequestModel filter);
+		Task<JournalEntriesGetRangeResponseModel> GetRangeAsync(JournalEntriesGetRangeRequestModel request, JournalEntryFilterRequestModel journalEntryFilter);
 
-		Task<JournalEntryResponseModel> GetSingle([FromQuery] int id);
+		Task<JournalEntryResponseModel?> GetSingle([FromQuery] int id);
 	}
 }

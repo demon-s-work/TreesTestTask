@@ -13,7 +13,7 @@ namespace TreesTestTask.Common.Mapper
 			config.NewConfig<JournalRecord, JournalRecordDto>();
 			config.NewConfig<Node, NodeDto>();
 			config.NewConfig<NodeDto, Node>()
-			      .Ignore(n => n.Parent);
+			      .Ignore(n => n.Parent!);
 			config.NewConfig<JournalRecordDto, JournalEntryResponseModel>();
 			config.NewConfig<NodeDto, GetOrCreateTreeResponseModel>();
 			config.NewConfig<JournalRecord, JournalRecordInfoModel>();

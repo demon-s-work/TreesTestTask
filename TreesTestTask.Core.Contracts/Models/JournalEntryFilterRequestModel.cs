@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TreesTestTask.Core.Contracts.Models.Abstractions
+namespace TreesTestTask.Core.Contracts.Models
 {
-	public class FilterRequestModel
+	public class JournalEntryFilterRequestModel
 	{
 		public DateTimeOffset? From { get; set; }
 

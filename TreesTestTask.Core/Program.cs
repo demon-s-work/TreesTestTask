@@ -38,7 +38,7 @@ public class Program
 			app.UseSwaggerUI();
 		}
 
-		app.UseMiddleware<SecureExceptionMiddleware>();
+		app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 		app.UseHttpsRedirection();
 		app.UseAuthorization();

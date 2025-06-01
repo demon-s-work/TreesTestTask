@@ -13,7 +13,7 @@ $$
 BEGIN
 RETURN QUERY(WITH RECURSIVE Tree AS (SELECT *
                                           FROM "Nodes" as node
-                                          WHERE node."Name" = RootName
+                                          WHERE node."Name" = RootName AND node."ParentId" IS NULL
                                           UNION ALL
                                           SELECT n.*
                                           FROM "Nodes" n
