@@ -7,11 +7,11 @@ namespace TreesTestTask.Services.Abstractions
 	[ApiController]
 	public abstract class BaseApiService : BaseService
 	{
-		protected IMapper _mapper;
+		protected IMapper Mapper;
 
 		protected BaseApiService(ILogger logger, IMapper mapper) : base(logger)
 		{
-			_mapper = mapper;
+			Mapper = mapper;
 		}
 	}
 }

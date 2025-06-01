@@ -9,15 +9,12 @@ namespace TreesTestTask.Middlewares
 	public class ExceptionHandlerMiddleware
 	{
 		private readonly RequestDelegate _next;
-		private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
 		public ExceptionHandlerMiddleware(
-			RequestDelegate next,
-			ILogger<ExceptionHandlerMiddleware> logger)
+			RequestDelegate next)
 
 		{
 			_next = next;
-			_logger = logger;
 		}
 
 		public async Task InvokeAsync(HttpContext context)

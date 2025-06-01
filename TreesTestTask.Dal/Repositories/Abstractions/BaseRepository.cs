@@ -7,27 +7,27 @@ namespace TreesTestTask.Migrations.Repositories.Abstractions
 {
 	public abstract class BaseRepository : BaseService
 	{
-		protected readonly ApplicationDbContext _context;
-		protected readonly IMapper _mapper;
+		protected readonly ApplicationDbContext Context;
+		protected readonly IMapper Mapper;
 
 		protected BaseRepository(
 			ApplicationDbContext context,
 			ILogger logger,
 			IMapper mapper) : base(logger)
 		{
-			_context = context;
-			_mapper = mapper;
+			Context = context;
+			Mapper = mapper;
 		}
 
 		protected async Task SaveChangesAsync()
 		{
 			try
 			{
-				await _context.SaveChangesAsync();
+				await Context.SaveChangesAsync();
 			}
 			catch (Exception e)
 			{
-				_logger.LogError(e.Message);
+				Logger.LogError(e.Message);
 				throw;
 			}
 		}

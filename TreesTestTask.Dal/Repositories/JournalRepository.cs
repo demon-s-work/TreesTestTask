@@ -22,26 +22,26 @@ namespace TreesTestTask.Migrations.Repositories
 
 		public async Task<JournalRecordDto> AddJournalRecordAsync(JournalRecordDto journalRecordDto)
 		{
-			var journalRecord = _mapper.Map<JournalRecord>(journalRecordDto);
-			await _context.JournalRecords.AddAsync(journalRecord);
+			var journalRecord = Mapper.Map<JournalRecord>(journalRecordDto);
+			await Context.JournalRecords.AddAsync(journalRecord);
 			await SaveChangesAsync();
-			return _mapper.Map<JournalRecordDto>(journalRecord);
+			return Mapper.Map<JournalRecordDto>(journalRecord);
 		}
 
 		public async Task<JournalRecord?> GetByIdAsync(int id)
 		{
-			return await _context.JournalRecords.SingleOrDefaultAsync(j => j.Id == id);
+			return await Context.JournalRecords.SingleOrDefaultAsync(j => j.Id == id);
 		}
 
 		public async Task<IEnumerable<JournalRecordInfoModel>> GetRange(JournalFilterModel filter, int skip, int take)
 		{
-			return await _context.JournalRecords
-			                     .AsNoTracking()
-			                     .ApplyFilter(filter)
-			                     .Skip(skip)
-			                     .Take(take)
-			                     .ProjectToType<JournalRecordInfoModel>()
-			                     .ToListAsync();
+			return await Context.JournalRecords
+			                    .AsNoTracking()
+			                    .ApplyFilter(filter)
+			                    .Skip(skip)
+			                    .Take(take)
+			                    .ProjectToType<JournalRecordInfoModel>()
+			                    .ToListAsync();
 		}
 	}
 }

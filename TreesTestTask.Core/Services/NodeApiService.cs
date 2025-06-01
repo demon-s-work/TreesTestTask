@@ -28,12 +28,15 @@ namespace TreesTestTask.Services
 		[ActionName("create")]
 		public async Task CreateNode([FromQuery] CreateNodeRequestModel request)
 		{
-			var tree = await _nodeRepository.GetTreeByNameAsync(request.TreeName);
+			var tree = await _nodeRepository.GetTreeByNameAsync(request.TreeName!);
+
+			if (tree == null)
+				throw new ResourceNotExistException(nameof(tree));
 
 			await _nodeRepository.CreateNodeAsync(new NodeDto
 			{
 				ParentId = request.ParentNodeId,
-				Name = request.NodeName,
+				Name = request.NodeName!,
 				TreeId = tree.Id
 			});
 		}
@@ -42,14 +45,14 @@ namespace TreesTestTask.Services
 		[ActionName("delete")]
 		public async Task DeleteNode([FromQuery] DeleteNodeRequestModel request)
 		{
-			await _nodeRepository.DeleteNodeAsync(request.NodeId, request.TreeName);
+			await _nodeRepository.DeleteNodeAsync(request.NodeId, request.TreeName!);
 		}
 
 		[HttpPost]
 		[ActionName("rename")]
 		public async Task RenameNode([FromQuery] RenameNodeRequestModel request)
 		{
-			var tree = await _nodeRepository.GetTreeByNameAsync(request.TreeName);
+			var tree = await _nodeRepository.GetTreeByNameAsync(request.TreeName!);
 
 			if (tree is null)
 				throw new ResourceNotExistException(nameof(tree));
@@ -57,7 +60,7 @@ namespace TreesTestTask.Services
 			if (node is null)
 				throw new ResourceNotExistException(nameof(node));
 
-			node.Name = request.NewNodeName;
+			node.Name = request.NewNodeName!;
 
 			await _nodeRepository.UpdateNodeAsync(node);
 		}

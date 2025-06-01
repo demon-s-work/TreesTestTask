@@ -7,7 +7,6 @@ namespace TreesTestTask.Migrations.Context
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 		{
-			Database.Migrate();
 		}
 
 		public DbSet<Node> Nodes { get; set; }

@@ -23,7 +23,7 @@ namespace TreesTestTask.Services
 			IMapper mapper) : base(logger, mapper)
 		{
 			_journalRepository = journalRepository;
-			_mapper = mapper;
+			Mapper = mapper;
 		}
 
 		[HttpPost]
@@ -31,7 +31,7 @@ namespace TreesTestTask.Services
 		public async Task<JournalEntriesGetRangeResponseModel> GetRangeAsync([FromQuery] JournalEntriesGetRangeRequestModel request,
 		                                                                     [FromBody, Required] JournalEntryFilterRequestModel journalEntryFilter)
 		{
-			var journalInfo = await _journalRepository.GetRange(_mapper.Map<JournalFilterModel>(journalEntryFilter), request.Skip, request.Take);
+			var journalInfo = await _journalRepository.GetRange(Mapper.Map<JournalFilterModel>(journalEntryFilter), request.Skip, request.Take);
 
 			return new JournalEntriesGetRangeResponseModel
 			{

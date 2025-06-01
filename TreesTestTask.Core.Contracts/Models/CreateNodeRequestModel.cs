@@ -5,12 +5,12 @@ namespace TreesTestTask.Core.Contracts.Models
 	public class CreateNodeRequestModel
 	{
 		[Required]
-		public string TreeName { get; set; }
+		public string? TreeName { get; set; }
 
 		[Required]
 		public int ParentNodeId { get; set; }
 
 		[Required]
-		public string NodeName { get; set; }
+		public string? NodeName { get; set; }
 	}
 }

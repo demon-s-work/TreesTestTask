@@ -21,15 +21,15 @@ namespace TreesTestTask.Migrations.Repositories
 
 		public async Task<NodeDto> GetOrCreateRootNodeAsync(string name)
 		{
-			var tree = await _context.Nodes
-			                         .FromSqlInterpolated($"SELECT * from get_nodes_hierarchy({name})")
-			                         .ToListAsync();
+			var tree = await Context.Nodes
+			                        .FromSqlInterpolated($"SELECT * from get_nodes_hierarchy({name})")
+			                        .ToListAsync();
 			var existingNode = tree.FirstOrDefault(n => n.ParentId == null && n.Name == name);
 
 			if (existingNode is not null)
-				return _mapper.Map<NodeDto>(existingNode);
+				return Mapper.Map<NodeDto>(existingNode);
 
-			var inserted = await _context.Nodes.AddAsync(new Node
+			var inserted = await Context.Nodes.AddAsync(new Node
 			{
 				Name = name
 			});
@@ -37,33 +37,33 @@ namespace TreesTestTask.Migrations.Repositories
 			inserted.Entity.TreeId = inserted.Entity.Id;
 			await SaveChangesAsync();
 
-			return _mapper.Map<NodeDto>(inserted.Entity);
+			return Mapper.Map<NodeDto>(inserted.Entity);
 		}
 
 		public async Task<NodeDto?> GetNodeAsync(int id, int treeId)
 		{
-			var node = await _context.Nodes
-			                         .AsNoTracking()
-			                         .SingleOrDefaultAsync(n => n.Id == id && n.TreeId == treeId);
-			return _mapper.Map<NodeDto>(node);
+			var node = await Context.Nodes
+			                        .AsNoTracking()
+			                        .SingleOrDefaultAsync(n => n.Id == id && n.TreeId == treeId);
+			return Mapper.Map<NodeDto>(node);
 		}
 
 		public async Task<NodeDto?> GetTreeByNameAsync(string name)
 		{
-			var treeNode = await _context.Nodes
-			                             .AsNoTracking()
-			                             .SingleOrDefaultAsync(n => n.Name == name && n.ParentId == null);
-			return _mapper.Map<NodeDto>(treeNode);
+			var treeNode = await Context.Nodes
+			                            .AsNoTracking()
+			                            .SingleOrDefaultAsync(n => n.Name == name && n.ParentId == null);
+			return Mapper.Map<NodeDto>(treeNode);
 		}
 
 		public async Task CreateNodeAsync(NodeDto node)
 		{
-			var parentNode = await _context.Nodes.SingleOrDefaultAsync(n => n.Id == node.ParentId);
+			var parentNode = await Context.Nodes.SingleOrDefaultAsync(n => n.Id == node.ParentId);
 			if (parentNode is null)
 				throw new ResourceNotExistException(nameof(parentNode));
 			if (parentNode.TreeId != node.TreeId)
 				throw new SecureException("The tree ID of the created node is different from the tree ID of the parent node");
-			await _context.Nodes.AddAsync(_mapper.Map<Node>(node));
+			await Context.Nodes.AddAsync(Mapper.Map<Node>(node));
 			await SaveChangesAsync();
 		}
 
@@ -73,33 +73,33 @@ namespace TreesTestTask.Migrations.Repositories
 			if (tree is null)
 				throw new ResourceNotExistException(nameof(tree));
 
-			var node = await _context.Nodes
-			                         .Include(node => node.Children)
-			                         .SingleOrDefaultAsync(n => n.Id == nodeId && n.TreeId == tree.Id);
+			var node = await Context.Nodes
+			                        .Include(node => node.Children)
+			                        .SingleOrDefaultAsync(n => n.Id == nodeId && n.TreeId == tree.Id);
 			if (node is null)
 				throw new ResourceNotExistException(nameof(node));
 			if (node.Children.Any())
 				throw new SecureException("You have to delete all children nodes first");
 
-			_context.Remove(node);
+			Context.Remove(node);
 			await SaveChangesAsync();
 		}
 
 		public async Task UpdateNodeAsync(NodeDto node)
 		{
-			_context.Nodes.Update(_mapper.Map<Node>(node));
+			Context.Nodes.Update(Mapper.Map<Node>(node));
 			await SaveChangesAsync();
 		}
 
 		public async Task<NodeDto?> GetNodeAsync(string name, int parentNodeId)
 		{
-			var tree = await _context.Nodes.SingleOrDefaultAsync(n => n.Name == name && n.ParentId == null);
+			var tree = await Context.Nodes.SingleOrDefaultAsync(n => n.Name == name && n.ParentId == null);
 			if (tree is null)
 			{
 				return null;
 			}
-			var parentNode = await _context.Nodes.SingleOrDefaultAsync(n => n.ParentId == parentNodeId && n.TreeId == tree.Id);
-			return _mapper.Map<NodeDto>(parentNode);
+			var parentNode = await Context.Nodes.SingleOrDefaultAsync(n => n.ParentId == parentNodeId && n.TreeId == tree.Id);
+			return Mapper.Map<NodeDto>(parentNode);
 		}
 	}
 }

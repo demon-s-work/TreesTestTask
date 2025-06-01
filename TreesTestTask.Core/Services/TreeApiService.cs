@@ -28,7 +28,7 @@ namespace TreesTestTask.Services
 		public async Task<GetOrCreateTreeResponseModel> GetOrCreateTree([FromQuery] [Required] string treeName)
 		{
 			var result = await _nodeRepository.GetOrCreateRootNodeAsync(treeName);
-			return _mapper.Map<GetOrCreateTreeResponseModel>(result);
+			return Mapper.Map<GetOrCreateTreeResponseModel>(result);
 		}
 	}
 }

@@ -4,11 +4,11 @@ namespace TreesTestTask.Common
 {
 	public abstract class BaseService
 	{
-		protected readonly ILogger _logger;
+		protected readonly ILogger Logger;
 
 		protected BaseService(ILogger logger)
 		{
-			_logger = logger;
+			Logger = logger;
 		}
 	}
 }
